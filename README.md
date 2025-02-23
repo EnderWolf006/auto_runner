@@ -2,6 +2,8 @@
 An Android(Flutter) application that can mock GPS location along a set route.
 > Warning: This project is used for test GPS function on your **own** application, PLEASE DO NOT USE IT FOR ILLEGAL PURPOSE
 
+## Screenshots
+![settings](images/settings.jpg)![dashboard](images/dashboard.jpg)
 ## Requirement
 - Android device(At least Android 11)
 - Xposed(Root)
