@@ -70,6 +70,7 @@ public class MainHook implements IXposedHookLoadPackage {
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) throws Throwable {
         Log.i("xposed", "handleLoadPackage: " + loadPackageParam.packageName);
+//        return;
 //        if (loadPackageParam.packageName.equals("com.bxkj.student")) return;
         final Class<?> sensorEL = findClass("android.hardware.SystemSensorManager$SensorEventQueue", loadPackageParam.classLoader);
         XposedBridge.hookAllMethods(sensorEL, "dispatchSensorEvent", new XC_MethodHook() {
@@ -131,26 +132,25 @@ public class MainHook implements IXposedHookLoadPackage {
 //                    }
 //                }
 
-
                 if (sensortype == 1) {
-                    ((float[]) param.args[1])[0] = randomFloat(-0.17896658, -0.17178397);
-                    ((float[]) param.args[1])[1] = randomFloat(0.30825347, 0.31603462);
-                    ((float[]) param.args[1])[2] = randomFloat(9.804854, 9.838972);
+//                    ((float[]) param.args[1])[0] = randomFloat(-0.17896658, -0.17178397);
+//                    ((float[]) param.args[1])[1] = randomFloat(0.30825347, 0.31603462);
+//                    ((float[]) param.args[1])[2] = randomFloat(9.804854, 9.838972);
 
                 } else if (sensortype == 3) {
-                    ((float[]) param.args[1])[0] = randomFloat(0.1875, 359.73438);
-                    ((float[]) param.args[1])[1] = randomFloat(-179.8125, 179.82812);
-                    ((float[]) param.args[1])[2] = randomFloat(-88.5625, 87.296875);
+//                    ((float[]) param.args[1])[0] = randomFloat(0.1875, 359.73438);
+//                    ((float[]) param.args[1])[1] = randomFloat(-179.8125, 179.82812);
+//                    ((float[]) param.args[1])[2] = randomFloat(-88.5625, 87.296875);
                 } else if (sensortype == 11) {
-                    ((float[]) param.args[1])[0] = randomFloat(-0.79822946, 0.8127403);
-                    ((float[]) param.args[1])[1] = randomFloat(-0.6897241, 0.7955777);
-                    ((float[]) param.args[1])[2] = randomFloat(-0.91179925, 0.88732475);
-                    ((float[]) param.args[1])[3] = randomFloat(0.012713679, 0.99990004);
-                    ((float[]) param.args[1])[4] = randomFloat(0.012713679, 0.99990004);
-                    ((float[]) param.args[1])[5] = randomFloat(0.012713679, 0.99990004);
-                    ((float[]) param.args[1])[6] = randomFloat(0.012713679, 0.99990004);
-                    ((float[]) param.args[1])[7] = randomFloat(0.012713679, 0.99990004);
-                    ((float[]) param.args[1])[8] = randomFloat(0.012713679, 0.99990004);
+//                    ((float[]) param.args[1])[0] = randomFloat(-0.79822946, 0.8127403);
+//                    ((float[]) param.args[1])[1] = randomFloat(-0.6897241, 0.7955777);
+//                    ((float[]) param.args[1])[2] = randomFloat(-0.91179925, 0.88732475);
+//                    ((float[]) param.args[1])[3] = randomFloat(0.012713679, 0.99990004);
+//                    ((float[]) param.args[1])[4] = randomFloat(0.012713679, 0.99990004);
+//                    ((float[]) param.args[1])[5] = randomFloat(0.012713679, 0.99990004);
+//                    ((float[]) param.args[1])[6] = randomFloat(0.012713679, 0.99990004);
+//                    ((float[]) param.args[1])[7] = randomFloat(0.012713679, 0.99990004);
+//                    ((float[]) param.args[1])[8] = randomFloat(0.012713679, 0.99990004);
                 } else if (sensortype == 19 || sensortype == 18) {
                     int nowStep;
                     XSharedPreferences pref = getPref("auto_runner");

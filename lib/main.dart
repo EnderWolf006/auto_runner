@@ -8,10 +8,10 @@ import 'package:flutter/services.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:prompt_dialog/prompt_dialog.dart';
 
-const double defaultSpeed = 2.5;
-const double defaultRandomOffset = 0.5;
+const double defaultSpeed = 2.7;
+const double defaultRandomOffset = 0.2;
 const double defaultUpdateFrequency = 0.5;
-const double defaultCandence = 3.0;
+const double defaultCandence = 0.5;
 
 //flutter build apk --release
 

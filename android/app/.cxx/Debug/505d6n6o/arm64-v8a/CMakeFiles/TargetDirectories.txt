@@ -1,0 +1,2 @@
+/Users/doge/Documents/APP/auto_runner/android/app/.cxx/Debug/505d6n6o/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/doge/Documents/APP/auto_runner/android/app/.cxx/Debug/505d6n6o/arm64-v8a/CMakeFiles/rebuild_cache.dir
