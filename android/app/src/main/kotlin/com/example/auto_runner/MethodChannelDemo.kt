@@ -131,7 +131,7 @@ class MethodChannel(messenger: BinaryMessenger, private val ctx: MainActivity) :
 
     private fun tick() {
         // 自然跑完，不是flutter主动停止
-        if (!isMoving && state == true) {
+        if (!isMoving && state == true && routeNodes.size >= 2) {
             // 持续设置为终点
             setLocation(routeNodes.last().longitude, routeNodes.last().latitude)
         }
