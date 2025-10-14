@@ -38,7 +38,6 @@ class MethodChannel(messenger: BinaryMessenger, private val ctx: MainActivity) :
     // 新增距离跟踪变量
     private var lastTickTime = 0L
     private var accumulatedDistance = 0.0
-    private var accumulatedSteps = 0.0  // 累积步数（使用 Double 以精确累加）
 
     private data class Node(val longitude: Double, val latitude: Double)
 
@@ -47,6 +46,7 @@ class MethodChannel(messenger: BinaryMessenger, private val ctx: MainActivity) :
     private var totalDistance: Double = 0.0
     private var startTime: Long = 0L
     private var isMoving: Boolean = false
+    private var step: Double = 0.0
 
     init {
         channel.setMethodCallHandler(this)
@@ -73,8 +73,8 @@ class MethodChannel(messenger: BinaryMessenger, private val ctx: MainActivity) :
         startTime = System.currentTimeMillis()
         lastTickTime = startTime
         accumulatedDistance = 0.0
-        accumulatedSteps = 0.0
         isMoving = true
+        step = 0.0
     }
 
     private fun parseRouteJson(json: String): List<Node> {
@@ -130,6 +130,11 @@ class MethodChannel(messenger: BinaryMessenger, private val ctx: MainActivity) :
     private fun Double.toRadians() = Math.toRadians(this)
 
     private fun tick() {
+        // 自然跑完，不是flutter主动停止
+        if (!isMoving && state == true) {
+            // 持续设置为终点
+            setLocation(routeNodes.last().longitude, routeNodes.last().latitude)
+        }
         if (!isMoving || speed == null || speed!! <= 0.0 || routeNodes.size < 2) return
 
         val currentTime = System.currentTimeMillis()
@@ -151,7 +156,9 @@ class MethodChannel(messenger: BinaryMessenger, private val ctx: MainActivity) :
         if (segmentIndex == -1) return
 
         val (currentLon, currentLat) = calculatePosition(segmentIndex, accumulatedDistance)
+        step += (cadence ?: 0.0) * timeDelta * currentSpeedFactor
         setLocation(currentLon, currentLat)
+
     }
 
     private fun updateSpeedFactor(currentTime: Long) {
@@ -207,15 +214,9 @@ class MethodChannel(messenger: BinaryMessenger, private val ctx: MainActivity) :
         val finalLat = Random.nextDouble(-1.0, 1.0) * (randomOffset!! * 0.00000899) + latitude
         MockLocationProvider.pushLocation(finalLat, finalLon)
 
-        // 累积步数增量，增速跟随 currentSpeedFactor 波动
-        val currentTime = System.currentTimeMillis()
-        val timeDelta = (currentTime - lastTickTime) / 1000.0
-        val stepIncrement = cadence!! * currentSpeedFactor * timeDelta
-        accumulatedSteps += stepIncrement
-        
-        val step = accumulatedSteps.roundToInt()
+//        val step = ((System.currentTimeMillis() - startTime) / 1000.0 * cadence!!).roundToInt()
         ctx.getSharedPreferences("auto_runner", Context.MODE_WORLD_READABLE).edit().apply {
-            putInt("step", step)
+            putInt("step", step.roundToInt())
             commit()
         }
     }
