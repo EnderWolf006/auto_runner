@@ -11,7 +11,7 @@ import 'package:prompt_dialog/prompt_dialog.dart';
 const double defaultSpeed = 2.7;
 const double defaultRandomOffset = 0.2;
 const double defaultUpdateFrequency = 0.5;
-const double defaultCandence = 0.5;
+const double defaultCandence = 1.6;
 
 //flutter build apk --release
 

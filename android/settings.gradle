@@ -1,6 +1,7 @@
 import org.gradle.api.initialization.resolve.RepositoriesMode
 
 pluginManagement {
+    // 读取 Flutter SDK 路径
     def flutterSdkPath = {
         def properties = new Properties()
         file("local.properties").withInputStream { properties.load(it) }
@@ -9,6 +10,7 @@ pluginManagement {
         return flutterSdkPath
     }()
 
+    // 引入 Flutter Gradle 工具
     includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
 
     repositories {
@@ -20,8 +22,8 @@ pluginManagement {
 
 plugins {
     id "dev.flutter.flutter-plugin-loader" version "1.0.0"
-    id "com.android.application" version "8.1.0" apply false
-    id "org.jetbrains.kotlin.android" version "1.8.22" apply false
+    id "com.android.application" version "8.7.0" apply false
+    id "org.jetbrains.kotlin.android" version "1.9.25" apply false
 }
 
 dependencyResolutionManagement {

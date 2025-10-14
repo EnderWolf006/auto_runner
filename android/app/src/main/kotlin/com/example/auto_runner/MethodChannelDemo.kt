@@ -38,6 +38,7 @@ class MethodChannel(messenger: BinaryMessenger, private val ctx: MainActivity) :
     // 新增距离跟踪变量
     private var lastTickTime = 0L
     private var accumulatedDistance = 0.0
+    private var accumulatedSteps = 0.0  // 累积步数（使用 Double 以精确累加）
 
     private data class Node(val longitude: Double, val latitude: Double)
 
@@ -72,6 +73,7 @@ class MethodChannel(messenger: BinaryMessenger, private val ctx: MainActivity) :
         startTime = System.currentTimeMillis()
         lastTickTime = startTime
         accumulatedDistance = 0.0
+        accumulatedSteps = 0.0
         isMoving = true
     }
 
@@ -154,7 +156,7 @@ class MethodChannel(messenger: BinaryMessenger, private val ctx: MainActivity) :
 
     private fun updateSpeedFactor(currentTime: Long) {
         if (currentTime - lastSpeedChangeTime > nextSpeedChangeInterval) {
-            if (Random.nextDouble() > 0.36){
+            if (Random.nextDouble() > 0.4872){
                 targetSpeedFactor = 1 + Random.nextDouble() * 1.1 // +110% - 1
                 nextSpeedChangeInterval = Random.nextLong(10_000L, 35_000L)
             }else{
@@ -205,7 +207,13 @@ class MethodChannel(messenger: BinaryMessenger, private val ctx: MainActivity) :
         val finalLat = Random.nextDouble(-1.0, 1.0) * (randomOffset!! * 0.00000899) + latitude
         MockLocationProvider.pushLocation(finalLat, finalLon)
 
-        val step = ((System.currentTimeMillis() - startTime) / 1000.0 * cadence!!).roundToInt()
+        // 累积步数增量，增速跟随 currentSpeedFactor 波动
+        val currentTime = System.currentTimeMillis()
+        val timeDelta = (currentTime - lastTickTime) / 1000.0
+        val stepIncrement = cadence!! * currentSpeedFactor * timeDelta
+        accumulatedSteps += stepIncrement
+        
+        val step = accumulatedSteps.roundToInt()
         ctx.getSharedPreferences("auto_runner", Context.MODE_WORLD_READABLE).edit().apply {
             putInt("step", step)
             commit()
